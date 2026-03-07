@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account — HomeMade Pickles</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #4A7C3F; --green-dark: #2E5226; --green-light: #EBF2E8;
+            --yellow: #D4A017; --yellow-light: #FBF4DC; --yellow-mid: #E8C547;
+            --brown: #5C3A1E; --brown-light: #F5EDE3;
+            --cream: #FDFAF4; --white: #FFFFFF; --text: #2C1A0E;
+            --text-muted: #7A5C42; --border: #E2D5C3;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, var(--yellow-light) 0%, var(--green-light) 100%);
+            min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+        }
+        .card {
+            background: var(--white); border-radius: 12px;
+            box-shadow: 0 8px 40px rgba(44,26,14,0.12);
+            width: 100%; max-width: 400px; padding: 48px 40px;
+            border-top: 4px solid var(--yellow);
+        }
+        .card-top { text-align: center; margin-bottom: 36px; }
+        .card-icon { font-size: 2rem; margin-bottom: 14px; display: block; }
+        h2 { font-family: 'Merriweather', serif; font-size: 1.8rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+        .card-sub { font-size: 0.875rem; color: var(--text-muted); font-weight: 300; }
+        .error-box { background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; font-size: 0.85rem; padding: 10px 14px; border-radius: 6px; margin-bottom: 20px; text-align: center; }
+        .field { margin-bottom: 18px; }
+        .field label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .field input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--text); background: var(--cream); outline: none; transition: all 0.2s; }
+        .field input:focus { border-color: var(--yellow); box-shadow: 0 0 0 3px var(--yellow-light); background: white; }
+        .field input::placeholder { color: #BCA98E; }
+        .btn { width: 100%; padding: 13px; background: var(--brown); color: white; border: none; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; margin-top: 8px; transition: background 0.25s, transform 0.2s; }
+        .btn:hover { background: #7A4A28; transform: translateY(-1px); }
+        .card-footer { text-align: center; margin-top: 24px; font-size: 0.875rem; color: var(--text-muted); }
+        .card-footer a { color: var(--green-dark); font-weight: 600; text-decoration: none; }
+        .card-footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-top">
+            <span class="card-icon">🌿</span>
+            <h2>Create account</h2>
+            <p class="card-sub">Join to start ordering</p>
+        </div>
+
+        {% if error %}
+        <div class="error-box">{{ error }}</div>
+        {% endif %}
+
+        <form action="{{ url_for('signup') }}" method="POST">
+            <div class="field">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Choose a username" required>
+            </div>
+            <div class="field">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Your email address" required>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Create a password" required>
+            </div>
+            <button type="submit" class="btn">Create Account</button>
+        </form>
+        <div class="card-footer">
+            Already have an account? <a href="{{ url_for('login') }}">Sign in</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us — HomeMade Pickles & Snacks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #4A7C3F; --yellow: #D4A017; --yellow-light: #FBF4DC; --yellow-mid: #E8C547; --brown-col: #5C3A1E; --brown-light: #F5EDE3; --green-dark: #2E5226; --green-light: #EBF2E8;
+            --green-mid: #6B9E5E; --white: #FFFFFF; --brown-mid: #8B5E3C; --bg: #FDFAF4;
+            --text: #2C1A0E; --text-muted: #7A5C42; --border: #E2D5C3;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); }
+
+        .site-header { background: var(--green-dark) !important; position: fixed; top: 0; left: 0; right: 0; height: 68px; background: var(--green-dark); border-bottom: none; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; z-index: 1000; box-shadow: 0 1px 12px rgba(30,53,40,0.06); }
+        .brand-btn { background: none; border: none; font-family: 'Merriweather', serif; font-size: 1.1rem; font-weight: 600; color: white; padding: 0; }
+        .nav-links { list-style: none; display: flex; align-items: center; gap: 4px; }
+        .nav-links a { font-size: 0.875rem; font-weight: 500; color: rgba(255,255,255,0.75); text-decoration: none; padding: 7px 12px; border-radius: 6px; transition: all 0.2s; }
+        .nav-links a:hover { color: var(--yellow-mid); background: rgba(255,255,255,0.08); }
+        .nav-links .cart-link { background: var(--green-dark); color: white !important; padding: 7px 16px; border-radius: 6px; }
+
+        .page-top { margin-top: 68px; background: var(--green); padding: 44px 48px 36px; border-bottom: none; }
+        .page-top h1 { color: white !important; font-family: 'Merriweather', serif; font-size: 2rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+        .page-top p { font-size: 0.875rem; color: rgba(255,255,255,0.72); font-weight: 300; }
+
+        .main-content { max-width: 900px; margin: 0 auto; padding: 56px 24px; display: grid; grid-template-columns: 1fr 1.6fr; gap: 28px; align-items: start; }
+
+        /* INFO CARD */
+        .info-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 32px; }
+        .info-card h3 { font-family: 'Merriweather', serif; font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 20px; }
+        .info-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; }
+        .info-icon { width: 36px; height: 36px; background: var(--green-light); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+        .info-text { font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; font-weight: 300; }
+        .info-text strong { display: block; font-weight: 600; color: var(--text); margin-bottom: 2px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* FORM CARD */
+        .form-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 32px; }
+        .form-card h3 { font-family: 'Merriweather', serif; font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 24px; }
+        .field { margin-bottom: 18px; }
+        .field label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text); margin-bottom: 7px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .field input, .field textarea {
+            width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 6px;
+            font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--text);
+            background: var(--bg); outline: none; transition: border-color 0.2s, box-shadow 0.2s; resize: vertical;
+        }
+        .field input:focus, .field textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(62,123,82,0.1); background: white; }
+        .field input::placeholder, .field textarea::placeholder { color: #A8C0B0; }
+        .submit-btn { width: 100%; padding: 13px; background: var(--green-dark); color: white; border: none; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; margin-top: 6px; transition: background 0.25s; }
+        .submit-btn:hover { background: var(--green-dark); }
+
+        footer { background: var(--green-dark); color: rgba(255,255,255,0.7); text-align: center; padding: 32px 20px; margin-top: 20px; }
+        footer .footer-brand { font-family: 'Merriweather', serif; font-size: 1rem; color: var(--yellow); display: block; margin-bottom: 6px; }
+        footer p { font-size: 0.8rem; }
+
+        @media(max-width:700px) { .main-content { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <span class="brand-btn">HomeMade Pickles &amp; Snacks</span>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('cart') }}" class="cart-link">🛒 Cart</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="page-top">
+        <h1>Contact Us</h1>
+        <p>We'd love to hear from you</p>
+    </div>
+
+    <div class="main-content">
+        <div class="info-card">
+            <h3>Get in Touch</h3>
+            <div class="info-item">
+                <div class="info-icon">📍</div>
+                <div class="info-text"><strong>Visit Us</strong>123 Spice Lane, Hyderabad, Telangana — 500001</div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">📞</div>
+                <div class="info-text"><strong>Phone</strong>+91 98765 43210</div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">📧</div>
+                <div class="info-text"><strong>Email</strong>contact@homemadepickles.in</div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">🕒</div>
+                <div class="info-text"><strong>Hours</strong>Monday – Saturday, 9 AM to 7 PM</div>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <h3>Send a Message</h3>
+            <form>
+                <div class="field">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" placeholder="Enter your name" required>
+                </div>
+                <div class="field">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="field">
+                    <label for="message">Message</label>
+                    <textarea id="message" rows="5" placeholder="How can we help you?" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <span class="footer-brand">HomeMade Pickles &amp; Snacks</span>
+        <p>© 2024 · Preserving Traditions · Crafted with Love in India</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snacks — HomeMade Pickles & Snacks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #4A7C3F; --yellow: #D4A017; --yellow-light: #FBF4DC; --yellow-mid: #E8C547; --brown-col: #5C3A1E; --brown-light: #F5EDE3; --green-dark: #2E5226; --green-light: #EBF2E8;
+            --green-mid: #6B9E5E; --white: #FFFFFF; --brown-mid: #8B5E3C; --bg: #FDFAF4;
+            --text: #2C1A0E; --text-muted: #7A5C42; --border: #E2D5C3;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); }
+        .site-header { background: var(--green-dark) !important; position: fixed; top: 0; left: 0; right: 0; height: 68px; background: var(--green-dark); border-bottom: none; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; z-index: 1000; box-shadow: 0 1px 12px rgba(30,53,40,0.06); }
+        .brand-btn { background: none; border: none; cursor: pointer; font-family: 'Merriweather', serif; font-size: 1.1rem; font-weight: 600; color: white; display: flex; align-items: center; gap: 6px; padding: 0; }
+        .brand-dropdown { display: none; position: absolute; top: calc(100% + 14px); left: 0; background: var(--white); border: 1px solid var(--border); border-radius: 8px; min-width: 180px; box-shadow: 0 8px 24px rgba(30,53,40,0.1); overflow: hidden; z-index: 10; }
+        .brand-dropdown.open { display: block; }
+        .brand-dropdown a { display: block; padding: 12px 18px; font-size: 0.875rem; color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); transition: background 0.2s; }
+        .brand-dropdown a:last-child { border-bottom: none; }
+        .brand-dropdown a:hover { background: var(--green-light); color: var(--green); }
+        .nav-links { list-style: none; display: flex; align-items: center; gap: 4px; }
+        .nav-links a { font-size: 0.875rem; font-weight: 500; color: rgba(255,255,255,0.75); text-decoration: none; padding: 7px 12px; border-radius: 6px; transition: all 0.2s; }
+        .nav-links a:hover { color: var(--yellow-mid); background: rgba(255,255,255,0.08); }
+        .nav-links .cart-link { background: var(--yellow); color: var(--brown-col, #5C3A1E) !important; padding: 7px 16px; border-radius: 5px; display: flex; align-items: center; gap: 6px; font-weight: 600; }
+        .nav-links .cart-link:hover { background: var(--green) !important; }
+        .cart-badge { background: var(--brown-col, #5C3A1E); color: var(--yellow); font-size: 0.7rem; font-weight: 700; min-width: 18px; height: 18px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; padding: 0 4px; }
+        .page-top { margin-top: 68px; background: var(--green); padding: 44px 48px 36px; border-bottom: none; }
+        .page-top h1 { color: white !important; font-family: 'Merriweather', serif; font-size: 2rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+        .page-top p { font-size: 0.875rem; color: rgba(255,255,255,0.72); font-weight: 300; }
+        .main-content { max-width: 1200px; margin: 0 auto; padding: 48px; }
+        .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .product-card { background: var(--white); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; transition: box-shadow 0.25s, transform 0.25s; }
+        .product-card:hover { box-shadow: 0 8px 28px rgba(30,53,40,0.1); transform: translateY(-4px); }
+        .product-img-wrap { overflow: hidden; }
+        .product-img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform 0.4s; }
+        .product-card:hover .product-img { transform: scale(1.04); }
+        .product-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column; }
+        .product-name { font-family: 'Merriweather', serif; font-size: 1.05rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+        .product-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; font-weight: 300; flex: 1; margin-bottom: 16px; }
+        .quantity-select { width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.875rem; color: var(--text); background: var(--bg); outline: none; margin-bottom: 10px; cursor: pointer; }
+        .quantity-select:focus { border-color: var(--green); }
+        .cart-btn { width: 100%; padding: 10px; background: var(--green-dark); color: white; border: none; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .cart-btn:hover { background: var(--green-dark); }
+        footer { background: var(--brown-col, #5C3A1E); color: rgba(255,255,255,0.65); text-align: center; padding: 36px 20px; margin-top: 40px; }
+        footer .footer-brand { font-family: 'Merriweather', serif; font-size: 1rem; color: var(--yellow); display: block; margin-bottom: 6px; }
+        footer p { font-size: 0.8rem; }
+        @media(max-width:900px) { .product-grid { grid-template-columns: repeat(2,1fr); } .site-header { background: var(--green-dark) !important; padding: 0 20px; } .main-content { padding: 32px 20px; } }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div style="position:relative;">
+            <button class="brand-btn" onclick="document.getElementById('bd').classList.toggle('open')">
+                HomeMade Pickles &amp; Snacks <span style="font-size:.75rem;color:var(--green-mid);font-family:sans-serif">▾</span>
+            </button>
+            <div class="brand-dropdown" id="bd">
+                <a href="{{ url_for('about') }}">About Us</a>
+                <a href="{{ url_for('contact') }}">Contact Us</a>
+            </div>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('veg_pickles') }}">Veg Pickles</a></li>
+                <li><a href="{{ url_for('non_veg_pickles') }}">Non-Veg Pickles</a></li>
+                <li><a href="{{ url_for('snacks') }}">Snacks</a></li>
+                <li><a href="{{ url_for('login') }}">Logout</a></li>
+                <li><a href="{{ url_for('cart') }}" class="cart-link">🛒 Cart <span class="cart-badge" id="cart-count">0</span></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="page-top">
+        <h1>Snacks</h1>
+        <p>Traditional homemade snacks — crispy, sweet, and always fresh</p>
+    </div>
+
+    <div class="main-content">
+        <div class="product-grid">
+
+            <div class="product-card">
+                <div class="product-img-wrap"><img src="../static/images/Banana1.jpg" alt="Banana Chips" class="product-img"></div>
+                <div class="product-body">
+                    <h3 class="product-name">Banana Chips</h3>
+                    <p class="product-desc">Thinly sliced raw bananas, sun-dried and lightly salted. Gluten-free and vegan.</p>
+                    <select class="quantity-select" id="banana-chips">
+                        <option value='{"weight":250,"price":300}'>250g — ₹300</option>
+                        <option value='{"weight":500,"price":600}'>500g — ₹600</option>
+                        <option value='{"weight":1000,"price":800}'>1kg — ₹800</option>
+                    </select>
+                    <button class="cart-btn" onclick="addToCart('Banana Chips','banana-chips','../static/images/Banana1.jpg',this)">+ Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img-wrap"><img src="../static/images/Aam-Papad.jpg" alt="Aam Papad" class="product-img"></div>
+                <div class="product-body">
+                    <h3 class="product-name">Crispy Aam-Papad</h3>
+                    <p class="product-desc">Sweet and tangy mango leather, sun-dried to perfection. A timeless summer treat.</p>
+                    <select class="quantity-select" id="aam-papad">
+                        <option value='{"weight":250,"price":150}'>250g — ₹150</option>
+                        <option value='{"weight":500,"price":300}'>500g — ₹300</option>
+                        <option value='{"weight":1000,"price":600}'>1kg — ₹600</option>
+                    </select>
+                    <button class="cart-btn" onclick="addToCart('Crispy Aam-Papad','aam-papad','../static/images/Aam-Papad.jpg',this)">+ Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img-wrap"><img src="../static/images/Sunnundalu.jpg" alt="Sunnundalu" class="product-img"></div>
+                <div class="product-body">
+                    <h3 class="product-name">Sunnundalu</h3>
+                    <p class="product-desc">Traditional Andhra sweet balls made from urad dal, jaggery, ghee, and cardamom.</p>
+                    <select class="quantity-select" id="sunnundalu">
+                        <option value='{"weight":250,"price":350}'>250g — ₹350</option>
+                        <option value='{"weight":500,"price":700}'>500g — ₹700</option>
+                        <option value='{"weight":1000,"price":1000}'>1kg — ₹1000</option>
+                    </select>
+                    <button class="cart-btn" onclick="addToCart('Sunnundalu','sunnundalu','../static/images/Sunnundalu.jpg',this)">+ Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img-wrap"><img src="../static/images/Chekka Pakodi.jpg" alt="Crispy Chekka Pakodi" class="product-img"></div>
+                <div class="product-body">
+                    <h3 class="product-name">Crispy Chekka Pakodi</h3>
+                    <p class="product-desc">Light and crispy traditional fritters made with a special spice blend.</p>
+                    <select class="quantity-select" id="chekka-pakodi">
+                        <option value='{"weight":250,"price":50}'>250g — ₹50</option>
+                        <option value='{"weight":500,"price":100}'>500g — ₹100</option>
+                        <option value='{"weight":1000,"price":200}'>1kg — ₹200</option>
+                    </select>
+                    <button class="cart-btn" onclick="addToCart('Crispy Chekka Pakodi','chekka-pakodi','../static/images/Chekka Pakodi.jpg',this)">+ Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img-wrap"><img src="../static/images/Boondhi Acchu.jpg" alt="Boondhi Acchu" class="product-img"></div>
+                <div class="product-body">
+                    <h3 class="product-name">Boondhi Acchu</h3>
+                    <p class="product-desc">Tiny crispy boondi in traditional acchu shape — a beloved festive snack.</p>
+                    <select class="quantity-select" id="boondhi-acchu">
+                        <option value='{"weight":250,"price":300}'>250g — ₹300</option>
+                        <option value='{"weight":500,"price":600}'>500g — ₹600</option>
+                        <option value='{"weight":1000,"price":900}'>1kg — ₹900</option>
+                    </select>
+                    <button class="cart-btn" onclick="addToCart('Boondhi Acchu','boondhi-acchu','../static/images/Boondhi Acchu.jpg',this)">+ Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img-wrap"><img src="../static/images/Chekkalu-3.jpg" alt="Chekkalu" class="product-img"></div>
+                <div class="product-body">
+                    <h3 class="product-name">Chekkalu</h3>
+                    <p class="product-desc">Classic rice cracker snacks made with rice flour and a hint of spice.</p>
+                    <select class="quantity-select" id="chekkalu">
+                        <option value='{"weight":250,"price":350}'>250g — ₹350</option>
+                        <option value='{"weight":500,"price":700}'>500g — ₹700</option>
+                        <option value='{"weight":1000,"price":1000}'>1kg — ₹1000</option>
+                    </select>
+                    <button class="cart-btn" onclick="addToCart('Chekkalu','chekkalu','../static/images/Chekkalu-3.jpg',this)">+ Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img-wrap"><img src="../static/images/ragi.jpg" alt="Ragi Laddu" class="product-img"></div>
+                <div class="product-body">
+                    <h3 class="product-name">Ragi Laddu</h3>
+                    <p class="product-desc">Nutritious finger millet laddus sweetened with jaggery — healthy and delicious.</p>
+                    <select class="quantity-select" id="ragi-laddu">
+                        <option value='{"weight":250,"price":350}'>250g — ₹350</option>
+                        <option value='{"weight":500,"price":700}'>500g — ₹700</option>
+                        <option value='{"weight":1000,"price":1000}'>1kg — ₹1000</option>
+                    </select>
+                    <button class="cart-btn" onclick="addToCart('Ragi Laddu','ragi-laddu','../static/images/ragi.jpg',this)">+ Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img-wrap"><img src="../static/images/Dry fruit laddo.jpg" alt="Dry Fruit Laddu" class="product-img"></div>
+                <div class="product-body">
+                    <h3 class="product-name">Dry Fruit Laddu</h3>
+                    <p class="product-desc">Indulgent laddus packed with cashews, almonds, raisins and natural sweeteners.</p>
+                    <select class="quantity-select" id="dryf-laddu">
+                        <option value='{"weight":250,"price":500}'>250g — ₹500</option>
+                        <option value='{"weight":500,"price":1000}'>500g — ₹1000</option>
+                        <option value='{"weight":1000,"price":1500}'>1kg — ₹1500</option>
+                    </select>
+                    <button class="cart-btn" onclick="addToCart('Dry Fruit Laddu','dryf-laddu','../static/images/Dry fruit laddo.jpg',this)">+ Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img-wrap"><img src="../static/images/Kara-Boondi-4.jpg" alt="Kara Boondi" class="product-img"></div>
+                <div class="product-body">
+                    <h3 class="product-name">Kara Boondi</h3>
+                    <p class="product-desc">Spicy and crunchy boondi seasoned with chilli and curry leaves — addictive snacking.</p>
+                    <select class="quantity-select" id="kara-boondi">
+                        <option value='{"weight":250,"price":250}'>250g — ₹250</option>
+                        <option value='{"weight":500,"price":500}'>500g — ₹500</option>
+                        <option value='{"weight":1000,"price":750}'>1kg — ₹750</option>
+                    </select>
+                    <button class="cart-btn" onclick="addToCart('Kara Boondi','kara-boondi','../static/images/Kara-Boondi-4.jpg',this)">+ Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img-wrap"><img src="../static/images/gavvalu_sweet.jpg" alt="Gavvalu" class="product-img"></div>
+                <div class="product-body">
+                    <h3 class="product-name">Gavvalu</h3>
+                    <p class="product-desc">Shell-shaped sweet snacks made from maida and jaggery — a traditional favourite.</p>
+                    <select class="quantity-select" id="gavvalu">
+                        <option value='{"weight":250,"price":250}'>250g — ₹250</option>
+                        <option value='{"weight":500,"price":500}'>500g — ₹500</option>
+                        <option value='{"weight":1000,"price":750}'>1kg — ₹750</option>
+                    </select>
+                    <button class="cart-btn" onclick="addToCart('Gavvalu','gavvalu','../static/images/gavvalu_sweet.jpg',this)">+ Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img-wrap"><img src="../static/images/kaju-chikki.jpg" alt="Kaju Chikki" class="product-img"></div>
+                <div class="product-body">
+                    <h3 class="product-name">Kaju Chikki</h3>
+                    <p class="product-desc">Crunchy cashew brittle made with jaggery — a classic festive treat.</p>
+                    <select class="quantity-select" id="kaju-chikki">
+                        <option value='{"weight":250,"price":250}'>250g — ₹250</option>
+                        <option value='{"weight":500,"price":500}'>500g — ₹500</option>
+                        <option value='{"weight":1000,"price":750}'>1kg — ₹750</option>
+                    </select>
+                    <button class="cart-btn" onclick="addToCart('Kaju Chikki','kaju-chikki','../static/images/kaju-chikki.jpg',this)">+ Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img-wrap"><img src="../static/images/peanutchikki_new_2048x.jpg" alt="Peanut Chikki" class="product-img"></div>
+                <div class="product-body">
+                    <h3 class="product-name">PeaNut Chikki</h3>
+                    <p class="product-desc">Classic peanut brittle made with jaggery — crunchy, sweet, and satisfying.</p>
+                    <select class="quantity-select" id="peanut-chikki">
+                        <option value='{"weight":250,"price":250}'>250g — ₹250</option>
+                        <option value='{"weight":500,"price":500}'>500g — ₹500</option>
+                        <option value='{"weight":1000,"price":750}'>1kg — ₹750</option>
+                    </select>
+                    <button class="cart-btn" onclick="addToCart('PeaNut Chikki','peanut-chikki','../static/images/peanutchikki_new_2048x.jpg',this)">+ Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img-wrap"><img src="../static/images/rava-ladoo-featured.jpg" alt="Rava Laddu" class="product-img"></div>
+                <div class="product-body">
+                    <h3 class="product-name">Rava Laddu</h3>
+                    <p class="product-desc">Soft semolina laddus made with ghee, sugar, and cardamom — melt-in-your-mouth goodness.</p>
+                    <select class="quantity-select" id="rava-laddu">
+                        <option value='{"weight":250,"price":250}'>250g — ₹250</option>
+                        <option value='{"weight":500,"price":500}'>500g — ₹500</option>
+                        <option value='{"weight":1000,"price":750}'>1kg — ₹750</option>
+                    </select>
+                    <button class="cart-btn" onclick="addToCart('Rava Laddu','rava-laddu','../static/images/rava-ladoo-featured.jpg',this)">+ Add to Cart</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <span class="footer-brand">HomeMade Pickles &amp; Snacks</span>
+        <p>© 2024 · Preserving Traditions · Crafted with Love in India</p>
+    </footer>
+
+    <script>
+        document.addEventListener('click', e => { if (!e.target.closest('[style*="relative"]')) document.getElementById('bd').classList.remove('open'); });
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        function addToCart(name, selectId, image, btn) {
+            const select = document.getElementById(selectId);
+            const { weight, price } = JSON.parse(select.value);
+            const item = { id: Date.now(), name, weight: weight + 'g', price: parseInt(price), image, qty: 1 };
+            const existing = cart.find(i => i.name === item.name && i.weight === item.weight);
+            if (existing) { existing.qty++; } else { cart.push(item); }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            const orig = btn.textContent;
+            btn.textContent = '✓ Added!'; btn.style.background = 'var(--green-dark)';
+            setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1200);
+        }
+        function updateCartCount() { const c = cart.reduce((a,i)=>a+i.qty,0); document.getElementById('cart-count').textContent=c; }
+        updateCartCount();
+    </script>
+</body>
+</html>

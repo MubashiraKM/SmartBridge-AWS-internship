@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeMade Pickles & Snacks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #4A7C3F;
+            --green-dark: #2E5226;
+            --green-light: #EBF2E8;
+            --yellow: #D4A017;
+            --yellow-light: #FBF4DC;
+            --yellow-mid: #E8C547;
+            --brown: #5C3A1E;
+            --brown-light: #F5EDE3;
+            --brown-mid: #8B5E3C;
+            --cream: #FDFAF4;
+            --white: #FFFFFF;
+            --text: #2C1A0E;
+            --text-muted: #7A5C42;
+            --border: #E2D5C3;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); }
+
+        header {
+            height: 70px; background: var(--green-dark);
+            display: flex; align-items: center; padding: 0 60px;
+            justify-content: space-between;
+        }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand-icon {
+            width: 38px; height: 38px; background: var(--yellow);
+            border-radius: 8px; display: flex; align-items: center;
+            justify-content: center; font-weight: 700; font-size: 0.85rem; color: var(--brown);
+        }
+        .brand-name { font-family: 'Merriweather', serif; font-size: 1.1rem; color: white; }
+
+        /* HERO */
+        .hero {
+            min-height: calc(100vh - 70px);
+            background: linear-gradient(160deg, var(--green-dark) 0%, var(--green) 55%, #6B9E5E 100%);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 60px 20px; position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(circle at 70% 30%, rgba(212,160,23,0.15) 0%, transparent 55%);
+        }
+        .hero-inner { position: relative; z-index: 1; max-width: 560px; }
+
+        .hero-badge {
+            display: inline-block; background: rgba(212,160,23,0.2);
+            border: 1px solid rgba(212,160,23,0.5); color: var(--yellow-mid);
+            font-size: 0.75rem; font-weight: 600; letter-spacing: 2px;
+            text-transform: uppercase; padding: 6px 16px; border-radius: 4px; margin-bottom: 28px;
+        }
+        h1 {
+            font-family: 'Merriweather', serif; font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 700; color: white; line-height: 1.25; margin-bottom: 20px;
+        }
+        h1 em { font-style: italic; color: var(--yellow-mid); }
+        .hero-sub {
+            font-size: 1rem; color: rgba(255,255,255,0.72); line-height: 1.7;
+            font-weight: 300; margin-bottom: 44px; max-width: 440px; margin-left: auto; margin-right: auto;
+        }
+        .cta-btn {
+            display: inline-block; background: var(--yellow); color: var(--brown);
+            text-decoration: none; padding: 15px 40px; border-radius: 6px;
+            font-size: 0.95rem; font-weight: 600;
+            transition: background 0.25s, transform 0.2s;
+            box-shadow: 0 4px 18px rgba(212,160,23,0.4);
+        }
+        .cta-btn:hover { background: var(--yellow-mid); transform: translateY(-2px); }
+
+        .tag-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 36px; }
+        .tag {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.8); font-size: 0.78rem; font-weight: 500;
+            padding: 6px 14px; border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <div class="brand-icon">HP</div>
+            <span class="brand-name">HomeMade Pickles & Snacks</span>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-badge">✦ Handcrafted since 1995</div>
+            <h1>Pickles made the<br><em>old-fashioned way</em></h1>
+            <p class="hero-sub">Natural ingredients, age-old recipes, and zero preservatives — the way food was always meant to be made.</p>
+            <a href="{{ url_for('login') }}" class="cta-btn">Shop Now</a>
+            <div class="tag-row">
+                <span class="tag">🌿 100% Natural</span>
+                <span class="tag">🏺 Small Batches</span>
+                <span class="tag">☀️ Sun-Dried</span>
+                <span class="tag">🚫 No Preservatives</span>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

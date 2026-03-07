@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout — HomeMade Pickles & Snacks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #4A7C3F; --yellow: #D4A017; --yellow-light: #FBF4DC; --yellow-mid: #E8C547; --brown-col: #5C3A1E; --brown-light: #F5EDE3; --green-dark: #2E5226; --green-light: #EBF2E8;
+            --green-mid: #6B9E5E; --white: #FFFFFF; --brown-mid: #8B5E3C; --bg: #FDFAF4;
+            --text: #2C1A0E; --text-muted: #7A5C42; --border: #E2D5C3;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); }
+
+        .site-header { background: var(--green-dark) !important; position: fixed; top: 0; left: 0; right: 0; height: 68px; background: var(--green-dark); border-bottom: none; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; z-index: 1000; box-shadow: 0 1px 12px rgba(30,53,40,0.06); }
+        .brand-btn { background: none; border: none; cursor: pointer; font-family: 'Merriweather', serif; font-size: 1.1rem; font-weight: 600; color: white; padding: 0; }
+        .nav-links { list-style: none; display: flex; align-items: center; gap: 4px; }
+        .nav-links a { font-size: 0.875rem; font-weight: 500; color: rgba(255,255,255,0.75); text-decoration: none; padding: 7px 12px; border-radius: 6px; transition: all 0.2s; }
+        .nav-links a:hover { color: var(--yellow-mid); background: rgba(255,255,255,0.08); }
+        .nav-links .cart-link { background: var(--yellow); color: var(--brown-col, #5C3A1E) !important; padding: 7px 16px; border-radius: 5px; display: flex; align-items: center; gap: 6px; font-weight: 600; }
+        .nav-links .cart-link:hover { background: var(--green) !important; }
+        .cart-badge { background: var(--brown-col, #5C3A1E); color: var(--yellow); font-size: 0.7rem; font-weight: 700; min-width: 18px; height: 18px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; padding: 0 4px; }
+
+        .page-wrap { margin-top: 68px; max-width: 780px; margin-left: auto; margin-right: auto; padding: 48px 24px; }
+
+        .page-title { font-family: 'Merriweather', serif; font-size: 1.8rem; font-weight: 600; color: var(--text); margin-bottom: 32px; }
+
+        .error-box { background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; font-size: 0.875rem; padding: 12px 16px; border-radius: 6px; margin-bottom: 24px; }
+
+        /* ORDER SUMMARY */
+        .summary-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 24px 28px; margin-bottom: 28px; }
+        .summary-card h3 { font-family: 'Merriweather', serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+        .cart-items-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+        .cart-item:last-child { border-bottom: none; }
+        .item-name { font-weight: 500; font-size: 0.9rem; }
+        .item-details { display: flex; gap: 14px; font-size: 0.82rem; color: var(--text-muted); }
+        .summary-totals { display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 600; color: var(--text); padding-top: 12px; }
+        .summary-totals .amount { color: var(--green); font-family: 'Merriweather', serif; font-size: 1.1rem; }
+
+        /* FORM */
+        .form-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 28px; }
+        .form-card h3 { font-family: 'Merriweather', serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 24px; color: var(--text); padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+
+        .field { margin-bottom: 20px; }
+        .field label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text); margin-bottom: 7px; letter-spacing: 0.5px; text-transform: uppercase; }
+        .field input, .field select {
+            width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
+            border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+            color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .field input:focus, .field select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(62,123,82,0.1); background: white; }
+        .field input::placeholder { color: #A8C0B0; }
+
+        .confirm-btn { width: 100%; padding: 14px; background: var(--green-dark); color: white; border: none; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 8px; transition: background 0.25s, transform 0.2s; }
+        .confirm-btn:hover { background: var(--green-dark); transform: translateY(-1px); }
+        #error-message { color: #B91C1C; font-size: 0.85rem; text-align: center; margin-top: 10px; min-height: 20px; }
+
+        footer { background: var(--green-dark); color: rgba(255,255,255,0.7); text-align: center; padding: 32px 20px; margin-top: 60px; }
+        footer .footer-brand { font-family: 'Merriweather', serif; font-size: 1rem; color: var(--yellow); display: block; margin-bottom: 6px; }
+        footer p { font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <button class="brand-btn">HomeMade Pickles &amp; Snacks</button>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('cart') }}" class="cart-link">🛒 Cart <span class="cart-badge" id="cart-count">0</span></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="page-wrap">
+        <h1 class="page-title">Checkout</h1>
+
+        {% if error %}
+        <div class="error-box">{{ error }}</div>
+        {% endif %}
+
+        <!-- Order Summary -->
+        <div class="summary-card">
+            <h3>Order Summary</h3>
+            <div id="cart-items-list" class="cart-items-list"></div>
+            <div class="summary-totals">
+                <span id="total-items">Total Items: —</span>
+                <span class="amount" id="total-amount">₹ —</span>
+            </div>
+        </div>
+
+        <!-- Delivery & Payment -->
+        <div class="form-card">
+            <h3>Delivery Details</h3>
+            <form id="checkout-form" method="POST" action="{{ url_for('checkout') }}">
+                <input type="hidden" name="cart_data" id="cart-data">
+                <input type="hidden" name="total_amount" id="total-amount-data">
+
+                <div class="field">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Your full name" required>
+                </div>
+                <div class="field">
+                    <label for="address">Delivery Address</label>
+                    <input type="text" id="address" name="address" placeholder="Street, City, State" required>
+                </div>
+                <div class="field">
+                    <label for="phone">Phone Number</label>
+                    <input type="text" id="phone" name="phone" pattern="[0-9]{10}" title="10 digit phone number" placeholder="10-digit mobile number" required>
+                </div>
+                <div class="field">
+                    <label for="payment">Payment Method</label>
+                    <select id="payment" name="payment" required>
+                        <option value="cod">Cash on Delivery</option>
+                        <option value="upi">UPI</option>
+                        <option value="card">Credit / Debit Card</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="confirm-btn">Confirm Order</button>
+                <p id="error-message"></p>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <span class="footer-brand">HomeMade Pickles &amp; Snacks</span>
+        <p>© 2024 · Preserving Traditions · Crafted with Love in India</p>
+    </footer>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let totalAmount = 0;
+
+        displayCartItems();
+
+        function displayCartItems() {
+            const container = document.getElementById('cart-items-list');
+            const totalItemsEl = document.getElementById('total-items');
+            const totalAmountEl = document.getElementById('total-amount');
+            let html = '';
+            let totalItems = 0;
+            totalAmount = 0;
+
+            cart.forEach(item => {
+                totalItems += item.qty;
+                const itemTotal = item.price * item.qty;
+                totalAmount += itemTotal;
+                html += `
+                    <div class="cart-item">
+                        <span class="item-name">${item.name} (${item.weight})</span>
+                        <div class="item-details">
+                            <span>Qty: ${item.qty}</span>
+                            <span>₹${item.price}/unit</span>
+                            <span style="font-weight:600;color:var(--text)">₹${itemTotal}</span>
+                        </div>
+                    </div>`;
+            });
+
+            container.innerHTML = html;
+            totalItemsEl.textContent = `Total Items: ${totalItems}`;
+            totalAmountEl.textContent = `₹${totalAmount}`;
+            document.getElementById('cart-data').value = JSON.stringify(cart);
+            document.getElementById('total-amount-data').value = totalAmount;
+            document.getElementById('cart-count').textContent = totalItems;
+        }
+
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (cart.length === 0) {
+                document.getElementById('error-message').textContent = "Your cart is empty. Add items before proceeding!";
+                return;
+            }
+            const phoneInput = document.getElementById('phone');
+            if (!/^\d{10}$/.test(phoneInput.value)) {
+                alert('Please enter a valid 10-digit phone number');
+                return;
+            }
+            this.submit();
+        });
+    </script>
+</body>
+</html>
