@@ -231,6 +231,10 @@ def checkout():
 def about():
     return render_template('about.html')
 
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
 @app.route('/sucess')
 def sucess():  # ✅ Match function name with url_for('sucess')
     return render_template('sucess.html')
