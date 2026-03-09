@@ -227,6 +227,9 @@ def checkout():
 
     return render_template('checkout.html')  # Render checkout page for GET request
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 @app.route('/sucess')
 def sucess():  # ✅ Match function name with url_for('sucess')
