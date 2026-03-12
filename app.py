@@ -8,7 +8,7 @@ from decimal import Decimal
 app = Flask(__name__)
 app.secret_key = 'your_very_secret_key_12345'  # Change for production!
 
-dynamodb = boto3.resource('dynamodb', region_name='ap-south-1')  # e.g., 'us-east-1'
+dynamodb = boto3.resource('dynamodb', region_name='us-east-1')  # e.g., 'us-east-1'
 users_table = dynamodb.Table('Users')
 orders_table = dynamodb.Table('Orders')
 
@@ -227,6 +227,13 @@ def checkout():
 
     return render_template('checkout.html')  # Render checkout page for GET request
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
 
 @app.route('/sucess')
 def sucess():  # ✅ Match function name with url_for('sucess')
